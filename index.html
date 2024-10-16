@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>16x16 Div Grid</title>
+    <style>
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(16, 50px); /* Adjust the size of each div */
+            grid-template-rows: repeat(16, 50px);
+            gap: 2px; /* Space between the divs */
+        }
+        .grid div {
+            background-color: lightblue;
+            border: 1px solid #333;
+        }
+    </style>
+</head>
+<body>
+    <div class="grid" id="grid"></div>
+
+    <script src="script.js"></script>
+</body>
+</html>
+
