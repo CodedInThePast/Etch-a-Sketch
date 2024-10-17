@@ -3,24 +3,101 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>16x16 Div Grid</title>
+    <title>Dynamic Sketch Pad</title>
     <style>
-        .grid {
-            display: grid;
-            grid-template-columns: repeat(16, 50px); /* Adjust the size of each div */
-            grid-template-rows: repeat(16, 50px);
-            gap: 2px; /* Space between the divs */
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh; /* Use full height of the viewport */
+            margin: 0;
+            background-color: #f0f0f0; /* Light background to see the grid clearly */
         }
-        .grid div {
-            background-color: lightblue;
-            border: 1px solid #333;
+        #buttonContainer {
+            display: flex;
+            flex-direction: column; /* Stack button vertically */
+            align-items: center; /* Center align button */
+            margin-right: 20px; /* Space between button and grid */
+        }
+        #container {
+            display: flex;
+            flex-wrap: wrap;
+            width: 960px; /* Fixed width for the grid */
+            height: 960px; /* Fixed height for the grid */
+            border: 2px solid #333; /* Border around the container for visibility */
+        }
+        .square {
+            background-color: white;
+            border: 1px solid #000; /* Border for visibility */
+            box-sizing: border-box; /* Include border in size calculations */
+            transition: background-color 0.3s; /* Smooth transition for color change */
+        }
+        button {
+            padding: 10px 20px; /* Button padding */
+            font-size: 16px; /* Button font size */
+            cursor: pointer; /* Pointer cursor on hover */
+            margin-bottom: 20px; /* Space below button */
         }
     </style>
 </head>
 <body>
-    <div class="grid" id="grid"></div>
 
-    <script src="script.js"></script>
+    <div id="buttonContainer">
+        <button id="newGridButton">Create New Grid</button>
+    </div>
+    <div id="container"></div>
+
+    <script>
+        const container = document.getElementById('container');
+        const button = document.getElementById('newGridButton');
+
+        // Function to create the grid
+        function createGrid(size) {
+            // Clear existing squares
+            container.innerHTML = '';
+
+            // Calculate square size based on grid size
+            const squareSize = 960 / size; // Total width/height divided by the number of squares
+
+            for (let i = 0; i < size * size; i++) {
+                const square = document.createElement('div');
+                square.classList.add('square');
+                square.style.width = `${squareSize}px`; // Set square width
+                square.style.height = `${squareSize}px`; // Set square height
+                container.appendChild(square);
+            }
+
+            // Add hover effect with random color
+            const squares = document.querySelectorAll('.square');
+            squares.forEach(square => {
+                square.addEventListener('mouseover', function() {
+                    // Generate a random RGB color
+                    const randomColor = `rgb(${getRandomInt(0, 255)}, ${getRandomInt(0, 255)}, ${getRandomInt(0, 255)})`;
+                    this.style.backgroundColor = randomColor; // Change color to random on hover
+                });
+            });
+        }
+
+        // Function to generate a random integer between min (inclusive) and max (inclusive)
+        function getRandomInt(min, max) {
+            return Math.floor(Math.random() * (max - min + 1)) + min;
+        }
+
+        // Event listener for button click
+        button.addEventListener('click', function() {
+            let newSize = prompt("Enter the number of squares per side (e.g., 16):", "16");
+            newSize = parseInt(newSize); // Convert input to an integer
+
+            // Validate input
+            if (newSize > 0 && newSize <= 100) { // Limit grid size for practicality
+                createGrid(newSize);
+            } else {
+                alert("Please enter a valid number between 1 and 100.");
+            }
+        });
+
+        // Initial grid
+        createGrid(16); // Create an initial 16x16 grid
+    </script>
 </body>
 </html>
-
